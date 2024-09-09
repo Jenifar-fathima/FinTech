@@ -9,11 +9,11 @@ namespace FinTech.Data
         public AccountType AccountType { get; set; }
         public Guid UserID { get; set; }
 
-        public Account(UserDTO userdto)
+        public Account(AccountDTO accountdto)
         {
             AccountID = Guid.NewGuid();
-            AccountType = userdto.AccountType;
-            UserID = userdto.UserID;
+            AccountType = accountdto.AccountType;
+            UserID = accountdto.UserID;
         }
     }
 }

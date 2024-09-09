@@ -47,8 +47,7 @@ namespace FinTech.Data
                 AddressLine = AddressLine,
                 City = City,
                 State = State,
-                PinCode = PinCode,
-                Password = Password
+                PinCode = PinCode
             };
         }
     }

@@ -12,43 +12,38 @@ namespace FinTech.Logic
 
             if (!InputValidationHelper.IsValidName(userDto.FirstName))
             {
-                apiResponse.IsSuccess = false;
-                apiResponse.Message = ErrorMessages.InvalidFirstName;
+                apiResponse.Message = AuthenticationMessages.InvalidFirstName;
                 return apiResponse;
             }
 
             if (!InputValidationHelper.IsValidEmail(userDto.Email))
             {
-                apiResponse.IsSuccess = false;
-                apiResponse.Message = ErrorMessages.InvalidUserEmail;
+                apiResponse.Message = AuthenticationMessages.InvalidUserEmail;
                 return apiResponse;
             }
 
             if (!InputValidationHelper.IsValidPhone(userDto.Phone))
             {
-                apiResponse.IsSuccess = false;
-                apiResponse.Message = ErrorMessages.InvalidPhoneNumber;
+                apiResponse.Message = AuthenticationMessages.InvalidPhoneNumber;
                 return apiResponse;
             }
 
             if (!InputValidationHelper.IsValidDOB(userDto.DateOfBirth))
             {
-                apiResponse.IsSuccess = false;
-                apiResponse.Message = ErrorMessages.InvalidDateOfBirth;
+                apiResponse.Message = AuthenticationMessages.InvalidDateOfBirth;
                 return apiResponse;
             }
 
             if (!InputValidationHelper.AreSame(userDto.Password, userDto.ConfirmPassword))
             {
-                apiResponse.IsSuccess = false;
-                apiResponse.Message = ErrorMessages.PasswordMismatch;
+                apiResponse.Message = AuthenticationMessages.PasswordMismatch;
                 return apiResponse;
             }
 
             var user = new User(userDto);
             DataContext.User.Add(user);
             apiResponse.IsSuccess = true;
-            apiResponse.Message = SuccessMessage.RegisterSuccess;
+            apiResponse.Message = AuthenticationMessages.RegisterSuccess;
             return apiResponse;
         }
 
@@ -58,15 +53,13 @@ namespace FinTech.Logic
 
             if (!InputValidationHelper.IsValidEmail(strEmail))
             {
-                apiResponse.IsSuccess = false;
-                apiResponse.Message = ErrorMessages.InvalidUserEmail;
+                apiResponse.Message = AuthenticationMessages.InvalidUserEmail;
                 return apiResponse;
             }
 
             if (!InputValidationHelper.IsValidPassword(strPassword))
             {
-                apiResponse.IsSuccess = false;
-                apiResponse.Message = ErrorMessages.InvalidPassword;
+                apiResponse.Message = AuthenticationMessages.InvalidPassword;
                 return apiResponse;
             }
 
@@ -74,13 +67,12 @@ namespace FinTech.Logic
 
             if (user == null)
             {
-                apiResponse.IsSuccess = false;
-                apiResponse.Message = ErrorMessages.UserNotFound;
+                apiResponse.Message = AuthenticationMessages.UserNotFound;
                 return apiResponse;
             }
 
             apiResponse.IsSuccess = true;
-            apiResponse.Message = SuccessMessage.LoginSuccess;
+            apiResponse.Message = AuthenticationMessages.LoginSuccess;
             apiResponse.Result = user.GetUserDTO();
             return apiResponse;
         }
