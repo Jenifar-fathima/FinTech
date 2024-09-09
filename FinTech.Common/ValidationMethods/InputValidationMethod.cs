@@ -9,16 +9,18 @@ namespace FinTech.Common
         public static bool IsValidPhone(string strPhone)
         {
             if (string.IsNullOrEmpty(strPhone) || strPhone.Length != 10 || !strPhone.All(char.IsDigit))
+            {
                 return false;
-
+            }
             return true;
         }
 
         public static bool IsValidName(string strFirstName)
         {
             if (string.IsNullOrEmpty(strFirstName) || !strFirstName.All(char.IsLetter))
+            {
                 return false;
-
+            }
             return true;
         }
 
@@ -26,8 +28,9 @@ namespace FinTech.Common
         {
             string emailPattern = @"[^@\s]+@[^@\s]+\.[^@\s]+$";
             if (string.IsNullOrEmpty(strEmail) || !Regex.IsMatch(strEmail, emailPattern))
-                return false;
-
+            {
+                return false; 
+            }
             return true;
         }
 
@@ -38,9 +41,11 @@ namespace FinTech.Common
 
         public static bool IsValidPassword(string strPassword)
         {
-            if (string.IsNullOrEmpty(strPassword) || strPassword.Length < 8)
+            string passwordPattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
+            if (string.IsNullOrEmpty(strPassword) || !Regex.IsMatch(strPassword, passwordPattern))
+            {
                 return false;
-
+            }
             return true;
         }
 

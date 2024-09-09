@@ -1,5 +1,4 @@
 ﻿using FinTech.Data;
-using System;
 using System.Linq;
 using FinTech.Common;
 
@@ -7,65 +6,83 @@ namespace FinTech.Logic
 {
     public class AuthenticationBL
     {
-        public bool Register(UserDTO userDto)
+        public ApiResponse<bool> Register(UserDTO userDto)
         {
+            var apiResponse = new ApiResponse<bool>();
+
             if (!InputValidationHelper.IsValidName(userDto.FirstName))
             {
-                throw new ArgumentException(ErrorMessages.InvalidFirstName);
+                apiResponse.IsSuccess = false;
+                apiResponse.Message = ErrorMessages.InvalidFirstName;
+                return apiResponse;
             }
 
             if (!InputValidationHelper.IsValidEmail(userDto.Email))
             {
-                throw new ArgumentException(ErrorMessages.InvalidUserEmail);
+                apiResponse.IsSuccess = false;
+                apiResponse.Message = ErrorMessages.InvalidUserEmail;
+                return apiResponse;
             }
 
             if (!InputValidationHelper.IsValidPhone(userDto.Phone))
             {
-                throw new ArgumentException(ErrorMessages.InvalidPhoneNumber);
+                apiResponse.IsSuccess = false;
+                apiResponse.Message = ErrorMessages.InvalidPhoneNumber;
+                return apiResponse;
             }
 
             if (!InputValidationHelper.IsValidDOB(userDto.DateOfBirth))
             {
-                throw new ArgumentException(ErrorMessages.InvalidDateOfBirth);
+                apiResponse.IsSuccess = false;
+                apiResponse.Message = ErrorMessages.InvalidDateOfBirth;
+                return apiResponse;
             }
 
             if (!InputValidationHelper.AreSame(userDto.Password, userDto.ConfirmPassword))
             {
-                throw new ArgumentException(ErrorMessages.PasswordMismatch);
+                apiResponse.IsSuccess = false;
+                apiResponse.Message = ErrorMessages.PasswordMismatch;
+                return apiResponse;
             }
 
-            User user = new User(userDto);
-
+            var user = new User(userDto);
             DataContext.User.Add(user);
-            return true;
+            apiResponse.IsSuccess = true;
+            apiResponse.Message = SuccessMessage.RegisterSuccess;
+            return apiResponse;
         }
 
-
-        public UserDTO Login(string strEmail, string strPassword)
+        public ApiResponse<UserDTO> Login(string strEmail, string strPassword)
         {
+            var apiResponse = new ApiResponse<UserDTO>();
+
             if (!InputValidationHelper.IsValidEmail(strEmail))
             {
-                throw new ArgumentException(ErrorMessages.InvalidUserEmail);  
+                apiResponse.IsSuccess = false;
+                apiResponse.Message = ErrorMessages.InvalidUserEmail;
+                return apiResponse;
             }
 
             if (!InputValidationHelper.IsValidPassword(strPassword))
             {
-                throw new ArgumentException(ErrorMessages.InvalidPassword);  
+                apiResponse.IsSuccess = false;
+                apiResponse.Message = ErrorMessages.InvalidPassword;
+                return apiResponse;
             }
 
-            var user = DataContext.User.FirstOrDefault(u => u.Email == strEmail);
+            var user = DataContext.User.FirstOrDefault(u => u.Email == strEmail && u.Password == strPassword);
 
-            if (user == null )
+            if (user == null)
             {
-                throw new ArgumentException(ErrorMessages.UserNotFound);  
+                apiResponse.IsSuccess = false;
+                apiResponse.Message = ErrorMessages.UserNotFound;
+                return apiResponse;
             }
 
-            if (user.Password != strPassword)
-            {
-                throw new ArgumentException(ErrorMessages.InvalidPassword);
-            }
-
-            return user.GetUserDTO();
+            apiResponse.IsSuccess = true;
+            apiResponse.Message = SuccessMessage.LoginSuccess;
+            apiResponse.Result = user.GetUserDTO();
+            return apiResponse;
         }
     }
 }
