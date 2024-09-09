@@ -1,20 +1,14 @@
 ﻿using FinTech.Data;
-using System;
+using FinTech.Common;
 
 namespace FinTech.Logic
 {
     public abstract class AccountBL
     {
-        public  Account CreateAccount(User user)
+        public  Account Create(UserDTO userdto)
         {
-            Account account = new Account
-            {
-                ID = Guid.NewGuid(),
-                UserID = user.UserID,
-                AccountType = user.AccountType
-            };
-
-            DataContext.Accounts.Add(account);
+            Account account = new Account(userdto);
+            DataContext.Account.Add(account);
             return account;
         }
     }

@@ -7,73 +7,65 @@ namespace FinTech.Logic
 {
     public class AuthenticationBL
     {
-        public User Login(Guid userID, string strPassword)
-        {
-            if (userID == Guid.Empty)
-            {
-                throw new ArgumentException(ErrorMessages.InvalidUserID);
-            }
-
-            if (string.IsNullOrEmpty(strPassword) || strPassword.Length < 8)
-            {
-                throw new ArgumentException(ErrorMessages.InvalidLoginPassword);
-            }
-
-            var user = DataContext.Users.FirstOrDefault(u => u.UserID == userID && u.Password == strPassword);
-
-            if (user == null)
-            {
-                throw new ArgumentException(ErrorMessages.UserNotFound);
-            }
-
-            return user;
-        }
-
         public bool Register(UserDTO userDto)
         {
-            if (DataContext.Users.Any(u => u.Phone == userDto.Phone))
+            if (!InputValidationHelper.IsValidName(userDto.FirstName))
             {
-                throw new ArgumentException(ErrorMessages.UserAlreadyExists);
+                throw new ArgumentException(ErrorMessages.InvalidFirstName);
             }
 
-            if (string.IsNullOrEmpty(userDto.Phone) || userDto.Phone.Length != 10 || !userDto.Phone.All(char.IsDigit))
+            if (!InputValidationHelper.IsValidEmail(userDto.Email))
+            {
+                throw new ArgumentException(ErrorMessages.InvalidUserEmail);
+            }
+
+            if (!InputValidationHelper.IsValidPhone(userDto.Phone))
             {
                 throw new ArgumentException(ErrorMessages.InvalidPhoneNumber);
             }
 
-            if (string.IsNullOrEmpty(userDto.Password) || userDto.Password.Length < 8)
-            {
-                throw new ArgumentException(ErrorMessages.InvalidPassword);
-            }
-
-            if (string.IsNullOrEmpty(userDto.FirstName) || string.IsNullOrEmpty(userDto.LastName))
-            {
-                throw new ArgumentException(ErrorMessages.InvalidName);
-            }
-
-            if (userDto.DateOfBirth >= DateTime.Today)
+            if (!InputValidationHelper.IsValidDOB(userDto.DateOfBirth))
             {
                 throw new ArgumentException(ErrorMessages.InvalidDateOfBirth);
             }
 
-            var user = new User
+            if (!InputValidationHelper.AreSame(userDto.Password, userDto.ConfirmPassword))
             {
-                UserID = Guid.NewGuid(),
-                FirstName = userDto.FirstName,
-                LastName = userDto.LastName,
-                Phone = userDto.Phone,
-                DateOfBirth = userDto.DateOfBirth,
-                AddressLine = userDto.AddressLine,
-                City = userDto.City,
-                State = userDto.State,
-                PinCode = userDto.PinCode,
-                Password = userDto.Password,
-                AccountType = userDto.AccountType
-            };
+                throw new ArgumentException(ErrorMessages.PasswordMismatch);
+            }
 
-            DataContext.Users.Add(user);
+            User user = new User(userDto);
+
+            DataContext.User.Add(user);
             return true;
+        }
+
+
+        public UserDTO Login(string strEmail, string strPassword)
+        {
+            if (!InputValidationHelper.IsValidEmail(strEmail))
+            {
+                throw new ArgumentException(ErrorMessages.InvalidUserEmail);  
+            }
+
+            if (!InputValidationHelper.IsValidPassword(strPassword))
+            {
+                throw new ArgumentException(ErrorMessages.InvalidPassword);  
+            }
+
+            var user = DataContext.User.FirstOrDefault(u => u.Email == strEmail);
+
+            if (user == null )
+            {
+                throw new ArgumentException(ErrorMessages.UserNotFound);  
+            }
+
+            if (user.Password != strPassword)
+            {
+                throw new ArgumentException(ErrorMessages.InvalidPassword);
+            }
+
+            return user.GetUserDTO();
         }
     }
 }
-
