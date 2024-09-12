@@ -29,7 +29,7 @@ namespace FinTech.Common
             string emailPattern = @"[^@\s]+@[^@\s]+\.[^@\s]+$";
             if (string.IsNullOrEmpty(strEmail) || !Regex.IsMatch(strEmail, emailPattern))
             {
-                return false; 
+                return false;
             }
             return true;
         }

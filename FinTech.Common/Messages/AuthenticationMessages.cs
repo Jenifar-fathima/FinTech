@@ -11,5 +11,6 @@
         public const string UserNotFound = "No user found with the provided email.";
         public const string RegisterSuccess = "Registered Successfully";
         public const string LoginSuccess = "Login Successfully";
+
     }
 }
