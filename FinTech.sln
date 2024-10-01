@@ -3,11 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinTech.Common", "FinTech.Common\FinTech.Common.csproj", "{9FC7DE27-38CC-4DB1-9FA4-4672DC922AB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinTech.Common", "FinTech.Common\FinTech.Common.csproj", "{9FC7DE27-38CC-4DB1-9FA4-4672DC922AB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinTech.Data", "FinTech.Data\FinTech.Data.csproj", "{9F53E028-4210-4F87-B0B8-C774B0ECA30E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinTech.Data", "FinTech.Data\FinTech.Data.csproj", "{9F53E028-4210-4F87-B0B8-C774B0ECA30E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9FC7DE27-38CC-4DB1-9FA4-4672DC922AB6} = {9FC7DE27-38CC-4DB1-9FA4-4672DC922AB6}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinTech.Logic", "FinTech.Logic\FinTech.Logic.csproj", "{FB9B0289-ADA2-4717-9825-20970805CC2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinTech.Logic", "FinTech.Logic\FinTech.Logic.csproj", "{FB9B0289-ADA2-4717-9825-20970805CC2F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9F53E028-4210-4F87-B0B8-C774B0ECA30E} = {9F53E028-4210-4F87-B0B8-C774B0ECA30E}
+		{9FC7DE27-38CC-4DB1-9FA4-4672DC922AB6} = {9FC7DE27-38CC-4DB1-9FA4-4672DC922AB6}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinTech.Web", "FinTech.Web\FinTech.Web.csproj", "{CCF0217F-832E-4AC3-9121-8B7D0EF6A9F8}"
 EndProject
